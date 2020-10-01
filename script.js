@@ -1,25 +1,15 @@
-'use strict'
+"use strict";
 
-const movieUrl = `https://www.omdbapi.com/?apikey=d17f780&`;
-
-const fetchJSON = async url => {
-    try {
-        const response = await fetch(url);
-        console.log(response);
-        const parsedData = await response.json();
-        console.log(parsedData);
-        console.log(parsedData.Title, parsedData.Plot, parsedData.Poster);
-        const dropMenu = document.querySelector('#select-dropdown');
-        console.log(dropMenu);
-        const movieList = document.querySelector('#movieList')//select
-       
-    } catch (error) {
-        console.log(error);
-
-    }
-
-}
-
-window.onload = fetchJSON(movieUrl);
-
-
+const container = document.getElementsByClassName("container");
+const dropMenu = document.querySelector("#select-dropdown");
+const movieList = document.querySelector("#movieList"); //select
+movieList.addEventListener("change", async event => {
+	const apiKey = "d17f780";
+	const movieUrl = `https://www.omdbapi.com/?apikey=${apiKey}&t=${event.target.value}`;
+	const response = await fetch(movieUrl);
+    const movieData = await response.json();
+	const title = document.createElement("p");
+	title.innerText = movieData.title;
+	//container.appendChild(title);
+	console.log(movieData);
+});
