@@ -1,28 +1,32 @@
 "use strict";
 
-const fetchMovies = () => {
+const movies = () => {
 	const movieList = document.querySelector("#movieList"); //select
-	movieList.addEventListener("change", async event => {
-		const movieUrl = `https://www.omdbapi.com/?apikey=d17f780&t=${event.target.value}`;
-		const response = await fetch(movieUrl);
-		const movieData = await response.json();
-		renderDom(movieData);
-	});
+	movieList.addEventListener("change", fetchMovies);
 }
 
+const fetchMovies = async event => {
+	const movieUrl = `https://www.omdbapi.com/?apikey=d17f780&t=${event.target.value}`;
+	const response = await fetch(movieUrl);
+	const movieData = await response.json();
+	renderDom(movieData);
+}
 const renderDom = (data) => {
 	const posterDiv = document.getElementById("posterDiv");
-	posterDiv.innerHTML = "";
+	posterDiv.innerHTML = ""; //clean the div upon every select action
+	//add image
 	let poster = document.createElement("img");
 	poster.src = data.Poster;
-	let title = document.createElement("h1");
-	title.innerHTML = data.Title;
-	posterDiv.appendChild(title);
 	posterDiv.appendChild(poster);
+	//add title
+	let title = document.createElement("h1");
+	title.textContent = data.Title;
+	console.log(title.innerHTML);
+	posterDiv.appendChild(title);
+	//add plot
 	const moviePlot = document.createElement('p');
-	moviePlot.innerHTML = '';
 	posterDiv.appendChild(moviePlot);
-	moviePlot.innerHTML = `${data.Plot}`;
+	moviePlot.innerText = `${data.Plot}`;
 }
 
-window.onload = fetchMovies();
+window.onload = movies();
